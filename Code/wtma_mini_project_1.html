@@ -1,0 +1,194 @@
+<html>
+<head>
+<title>Signup Form</title>
+    <style>
+        body 
+        {
+            font-family: Arial;
+            text-align: center;
+            background-image: url('s.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        form
+        {
+            margin: 20px auto;
+            width: 400px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        table
+        {
+            margin: 20px auto;
+            width: 400px;
+            border: 5px solid #000000;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        input, textarea 
+        {
+            width: 100%;
+            margin: 5px 0;
+            padding: 3px;
+        }
+        .error 
+        {
+            color: red;
+            font-size: 12px;
+        }
+        table 
+        {
+            width: 80%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);	
+        }
+        th, td 
+        {
+            border: 1px solid #000000;
+            padding: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="color:white;">Signup Form</h2>
+    <form id="signupForm" onsubmit="return validateForm()">
+       <p style="text-align:left;">First Name:</p>
+        <input type="text" id="firstname" placeholder="Enter your First Name">
+        <span class="error" id="firstname-error"></span>
+       <p style="text-align:left;">Last Name:</p>
+        <input type="text" id="lastname" placeholder="Enter your Last Name">
+        <span class="error" id="lastname-error"></span>
+       <p style="text-align:left;">Email:</p>
+        <input type="email" id="email" placeholder="Enter your Email">
+        <span class="error" id="email-error"></span>
+       <p style="text-align:left;">Date of Birth:</p>   
+        <input type="date" id="dob">
+        <span class="error" id="dob-error"></span>
+       <p style="text-align:left;">Age:</p>
+        <input type="number" id="age" placeholder="Enter your Age">
+        <span class="error" id="age-error"></span>
+       <p style="text-align:left;">Gender:</p>
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <span class="error" id="gender-error"></span>
+       <p style="text-align:left;">Phone:</p>
+        <input type="text" id="phone" placeholder="Enter your Phone Number">
+        <span class="error" id="phone-error"></span>
+       <p style="text-align:left;">Address:</p>
+        <textarea id="address" placeholder="Enter your Address"></textarea>
+        <span class="error" id="address-error"></span>
+
+        <button type="submit">Sign up</button>
+    </form>
+    
+    <h2>Submitted Data</h2>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>Age</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    
+    <script>        
+        function validateForm() 
+        {            
+            let firstname = document.getElementById("firstname").value;            
+            let email = document.getElementById("email").value;            
+            let phone = document.getElementById("phone").value;            
+            let lastname = document.getElementById("lastname").value;            
+            let address = document.getElementById("address").value;            
+            let dob = document.getElementById("dob").value;
+            let age = document.getElementById("age").value;
+            let gender = document.querySelector('input[name="gender"]:checked');
+
+            const firstnameError = document.getElementById("firstname-error");
+            const emailError = document.getElementById("email-error");
+            const phoneError = document.getElementById("phone-error");
+            const lastnameError = document.getElementById("lastname-error");
+            const addressError = document.getElementById("address-error");
+            const dobError = document.getElementById("dob-error");
+            const ageError = document.getElementById("age-error");
+            const genderError = document.getElementById("gender-error");
+
+            firstnameError.textContent = "";
+            emailError.textContent = "";
+            phoneError.textContent = "";
+            lastnameError.textContent = "";
+            addressError.textContent = "";
+            dobError.textContent = "";
+            ageError.textContent = "";
+            genderError.textContent = "";
+            
+            let isvalid = true;
+            
+            if(/[^a-zA-Z]/.test(firstname)) 
+            {
+                firstnameError.textContent="First Name only contains alphabet";
+                isvalid = false;
+            } else if(firstname.length <= 6)
+            
+            {
+                firstnameError.textContent="First Name length not less than 6 characters";
+                isvalid = false;
+            }
+
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) 
+            {
+                emailError.textContent = "Please enter a valid email address.";
+                isvalid = false;
+            }
+            if(phone.length !== 10)
+            {
+                phoneError.textContent = "Phone number length must be 10";
+                isvalid = false;
+            }
+            if (!dob)
+            {
+                dobError.textContent = "Date of birth is required.";
+                isvalid = false;
+            }
+            if (!age)
+            {
+                ageError.textContent = "Age is required.";
+                isvalid = false;
+            }
+            if (!gender)
+            {
+                genderError.textContent = "Please select a gender.";
+                isvalid = false;
+            }
+            
+            if(isvalid)
+            {
+                let table = document.getElementById("dataTable").getElementsByTagName('tbody')[0];
+                let newRow = table.insertRow();
+                newRow.insertCell().textContent=firstname;
+                newRow.insertCell().textContent=lastname;
+                newRow.insertCell().textContent=email;
+                newRow.insertCell().textContent=dob;
+                newRow.insertCell().textContent=age;
+                newRow.insertCell().textContent=phone;
+                newRow.insertCell().textContent=address;
+                newRow.insertCell().textContent=gender.value;
+                alert("Register successfully");
+                document.getElementById("signupForm").reset();
+                return false;
+            }
+            return false;
+        }                    
+    </script>
+</body>
+</html>
